@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Navya 🌹</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Styles */
+        body {
+            margin: 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe6e9 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            text-align: center;
+            color: #d6336c;
+            overflow-x: hidden;
+        }
+
+        /* The Box */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #fff;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #e63946;
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+        }
+
+        /* Inputs & Buttons */
+        input {
+            width: 85%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ffccd5;
+            border-radius: 12px;
+            font-family: inherit;
+        }
+
+        .btn-main {
+            background: linear-gradient(45deg, #ff0a54, #ff477e);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 10, 84, 0.3);
+        }
+
+        /* Puppy Image Style */
+        .puppy-box {
+            margin: 15px auto;
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            animation: bounce 3s infinite ease-in-out;
+            background: #fff;
+        }
+        
+        .puppy-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Rose Grid */
+        #garden-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .rose-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .rose-wrapper:hover { transform: scale(1.1); }
+
+        .rose { font-size: 55px; }
+
+        .popup-msg {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px solid #ff0a54;
+            color: #d6336c;
+            width: 140px;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+
+        .hidden { display: none !important; }
+        
+        /* Hearts Background */
+        .heart-bg {
+            position: fixed;
+            color: #ff0a54;
+            opacity: 0.3;
+            top: -20px;
+            animation: fall linear infinite;
+            z-index: -1;
+        }
+        @keyframes fall { to { transform: translateY(110vh); } }
+        
+        #share-link-box {
+            background: #f8f9fa;
+            padding: 10px;
+            margin-top: 10px;
+            word-break: break-all;
+            border: 1px dashed #ff0a54;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <div id="create-screen" class="container">
+        <h1>Rose Garden 🌹</h1>
+        <p>Create a surprise for Navya</p>
+        
+        <input type="text" id="sender" placeholder="Your Name" value="Shivang">
+        <input type="text" id="receiver" placeholder="Her Name" value="Navya">
+        
+        <p style="margin: 15px 0 5px; font-weight:bold; color:#ff477e;">5 Secret Messages:</p>
+        <input type="text" id="msg1" placeholder="1. First message...">
+        <input type="text" id="msg2" placeholder="2. Second message...">
+        <input type="text" id="msg3" placeholder="3. Third message...">
+        <input type="text" id="msg4" placeholder="4. Fourth message...">
+        <input type="text" id="msg5" placeholder="5. Fifth message...">
+        
+        <button class="btn-main" onclick="generateLink()">Create Link ✨</button>
+
+        <div id="result-area" class="hidden">
+            <p>✅ <b>Copy this Link:</b></p>
+            <div id="share-link-box"></div>
+        </div>
+    </div>
+
+    <div id="view-screen" class="container hidden">
+        <h1 id="greeting-title">Happy Rose Day!</h1>
+        
+        <p>For <b id="display-receiver"></b></p>
+        
+        <div class="puppy-box">
+            <img id="puppy-img" src="https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=500&q=80" class="puppy-img" alt="Cute Puppy with Rose">
+        </div>
+
+        <p style="font-size:13px; color:#888;">Tap the roses below 👇</p>
+        
+        <div id="garden-container"></div>
+        
+        <p style="margin-top:20px;">Love, <span id="display-sender"></span> ❤️</p>
+    </div>
+
+    <script>
+        // Hearts Animation
+        function startHearts() {
+            const container = document.getElementById('hearts-container');
+            for(let i=0; i<15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'heart-bg';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        startHearts();
+
+        // Main Logic
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('to')) {
+                document.getElementById('create-screen').classList.add('hidden');
+                document.getElementById('view-screen').classList.remove('hidden');
+
+                document.getElementById('display-receiver').innerText = decodeURIComponent(params.get('to'));
+                document.getElementById('display-sender').innerText = decodeURIComponent(params.get('from'));
+                document.getElementById('greeting-title').innerText = "Happy Rose Day " + decodeURIComponent(params.get('to')) + "!";
+
+                const gardenDiv = document.getElementById('garden-container');
+                for (let i = 1; i <= 5; i++) {
+                    const key = 'm' + i;
+                    if (params.has(key) && params.get(key) !== "") {
+                        addRose(gardenDiv, decodeURIComponent(params.get(key)));
+                    }
+                }
+            }
+        };
+
+        function addRose(container, message) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'rose-wrapper';
+            wrapper.innerHTML = `<div class="rose">🌹</div><div class="popup-msg">${message}</div>`;
+            wrapper.onclick = function() {
+                const popup = this.querySelector('.popup-msg');
+                const all = document.querySelectorAll('.popup-msg');
+                all.forEach(p => { if(p !== popup) p.style.display = 'none'; });
+                popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+            };
+            container.appendChild(wrapper);
+        }
+
+        function generateLink() {
+            const sender = document.getElementById('sender').value;
+            const receiver = document.getElementById('receiver').value;
+            
+            if(!sender || !receiver) { alert("Names are required!"); return; }
+            
+            let url = window.location.href.split('?')[0] + `?to=${encodeURIComponent(receiver)}&from=${encodeURIComponent(sender)}`;
+            for(let i=1; i<=5; i++) {
+                const val = document.getElementById('msg' + i).value;
+                if(val) url += `&m${i}=${encodeURIComponent(val)}`;
+            }
+            document.getElementById('result-area').classList.remove('hidden');
+            document.getElementById('share-link-box').innerText = url;
+        }
+    </script>
+</body>
+</html>
